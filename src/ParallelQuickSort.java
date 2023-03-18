@@ -1,6 +1,4 @@
 
-// Java program for the above approach
-import java.io.*;
 import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
@@ -12,7 +10,13 @@ public class ParallelQuickSort
     int[] arr;
 
     public static void perform(int[] arr) {
-        partition(0, arr.length - 1, arr);
+        ForkJoinPool pool = ForkJoinPool.commonPool();
+
+        // Start the first thread in fork
+        // join pool for range 0, n-1
+        pool.invoke(
+                new ParallelQuickSort(
+                        0, arr.length - 1, arr));
     }
 
     /**
@@ -110,23 +114,4 @@ public class ParallelQuickSort
         return null;
     }
 
-    // Driver Code
-    public static void main(String args[]) {
-        int n = 7;
-        int[] arr = { 54, 64, 95, 82, 12, 32, 63 };
-
-        // Forkjoin ThreadPool to keep
-        // thread creation as per resources
-        ForkJoinPool pool = ForkJoinPool.commonPool();
-
-        // Start the first thread in fork
-        // join pool for range 0, n-1
-        pool.invoke(
-                new ParallelQuickSort(
-                        0, n - 1, arr));
-
-        // Print shorted elements
-        for (int i = 0; i < n; i++)
-            System.out.print(arr[i] + " ");
-    }
 }
