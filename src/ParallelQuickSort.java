@@ -12,18 +12,15 @@ public class ParallelQuickSort
     public static void perform(int[] arr) {
         ForkJoinPool pool = ForkJoinPool.commonPool();
 
-        // Start the first thread in fork
-        // join pool for range 0, n-1
+        // Start the first thread in the range 0, n-1 of the fork join pool.
         pool.invoke(
                 new ParallelQuickSort(
                         0, arr.length - 1, arr));
     }
 
     /**
-     * Finding random pivoted and partition
-     * array on a pivot.
-     * There are many different
-     * partitioning algorithms.
+     * locating random pivoted arrays and partitioning them on a pivot.
+     * The algorithms used for partitioning come in numerous varieties.
      * 
      * @param start
      * @param end

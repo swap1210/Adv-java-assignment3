@@ -4,27 +4,20 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ParallelQuickSortThreadPool {
-    /**
-     * Number of threads to use for sorting.
-     */
+    // Get all possible thread count from the system
     private static final int N_THREADS = Runtime.getRuntime().availableProcessors();
 
-    /**
-     * Multiple to use when determining when to fall back.
-     */
+    // To employ several while deciding when to fall back.
     private static final int FALLBACK = 2;
 
-    /**
-     * Thread pool used for executing sorting Runnables.
-     */
+    // Thread pool used for executing sorting Runnables.
     private static Executor pool = Executors.newFixedThreadPool(N_THREADS);
 
     /**
-     * Main method used for sorting from clients. Input is sorted in place using
-     * multiple threads.
+     * The starter method sorting. With the aid of several threads,
+     * input is sorted in order.
      *
      * @param input The array to sort.
-     * @param <T>   The type of the objects being sorted, must extend Comparable.
      */
     public static void perform(int[] input) {
         final AtomicInteger count = new AtomicInteger(1);
@@ -38,37 +31,26 @@ public class ParallelQuickSortThreadPool {
         }
     }
 
-    /**
-     * Sorts a section of an array using quicksort. The method used is not
-     * technically recursive as it just creates new
-     * runnables and hands them off to the ThreadPoolExecutor.
-     *
-     * @param <T> The type of the objects being sorted, must extend Comparable.
-     */
+    // Makes use of quicksort to sort a block of an array. The technique employed
+    // merely generates new runnables and passes them to the ThreadPoolExecutor, so
+    // it is not technically recursive.
+
     private static class QuicksortRunnable implements Runnable {
-        /**
-         * The array being sorted.
-         */
+        // The array being sorted.
         private final int[] values;
-        /**
-         * The starting index of the section of the array to be sorted.
-         */
+        // The starting index of the block of the array to be sorted.
         private final int left;
-        /**
-         * The ending index of the section of the array to be sorted.
-         */
+        // The ending index of the block of the array to be sorted.
         private final int right;
-        /**
-         * The number of threads currently executing.
-         */
+        // The number of threads currently executing.
         private final AtomicInteger count;
 
         /**
          * Default constructor. Sets up the runnable object for execution.
          *
          * @param values The array to sort.
-         * @param left   The starting index of the section of the array to be sorted.
-         * @param right  The ending index of the section of the array to be sorted.
+         * @param left   The starting index of the block of the array to be sorted.
+         * @param right  The ending index of the block of the array to be sorted.
          * @param count  The number of currently executing threads.
          */
         public QuicksortRunnable(int[] values, int left, int right, AtomicInteger count) {
@@ -78,12 +60,10 @@ public class ParallelQuickSortThreadPool {
             this.count = count;
         }
 
-        /**
-         * The thread's run logic. When this thread is done doing its stuff it checks to
-         * see if all other threads are as
-         * well. If so, then we notify the count object so Sorter.quicksort stops
-         * blocking.
-         */
+        // Run logic for the thread. After this thread is finished, it checks to verify
+        // if every other thread is also finished. If so, we inform the count object so
+        // Sorter.quicksort will no longer block.
+
         @Override
         public void run() {
             quicksort(left, right);
@@ -95,14 +75,12 @@ public class ParallelQuickSortThreadPool {
             }
         }
 
-        /**
-         * Method which actually does the sorting. Falls back on recursion if there are
-         * a certain number of queued /
-         * running tasks.
-         *
-         * @param pLeft  The left index of the sub array to sort.
-         * @param pRight The right index of the sub array to sort.
-         */
+        // Method which actually does the sorting. Falls back to recursion if there are
+        // too many running tasks in the queue.
+
+        // @param pLeft The left index of the sub array to sort.
+        // @param pRight The right index of the sub array to sort.
+
         private void quicksort(int pLeft, int pRight) {
             if (pLeft < pRight) {
                 int storeIndex = partition(pLeft, pRight);
@@ -117,16 +95,13 @@ public class ParallelQuickSortThreadPool {
             }
         }
 
-        /**
-         * Partitions the portion of the array between indexes left and right,
-         * inclusively, by moving all elements less
-         * than values[pivotIndex] before the pivot, and the equal or greater elements
-         * after it.
-         *
-         * @param pLeft
-         * @param pRight
-         * @return The final index of the pivot value.
-         */
+        // To divide the area of the array between indices left and right, inclusively,
+        // moves all entries with values less than values[pivotIndex] before the pivot
+        // and all elements with values equal to or more after it.
+        // @param pLeft
+        // @param pRight
+        // @return The final index of the pivot value.
+
         private int partition(int pLeft, int pRight) {
             int pivotValue = values[pRight];
             int storeIndex = pLeft;
@@ -141,12 +116,7 @@ public class ParallelQuickSortThreadPool {
             return storeIndex;
         }
 
-        /**
-         * Simple swap method.
-         *
-         * @param left  The index of the first value to swap with the second value.
-         * @param right The index of the second value to swap with the first value.
-         */
+        // Method to Swap integers
         private void swap(int left, int right) {
             int temp = values[left];
             values[left] = values[right];
