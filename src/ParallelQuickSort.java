@@ -1,13 +1,20 @@
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
-public class ParallelQuickSort
+public class ParallelQuickSort<T extends Comparable>
         extends RecursiveTask<Integer> {
-
+    List<T> newList;
     int start, end;
     int[] arr;
+
+    public ParallelQuickSort() {
+        newList = Collections.synchronizedList(new ArrayList<T>());
+    }
 
     public static void perform(int[] arr) {
         ForkJoinPool pool = ForkJoinPool.commonPool();
