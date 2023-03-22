@@ -21,9 +21,9 @@ public class Driver {
         resultHeader.add("Thread Pooled Parallel Quick Sort ");
         testResults.add(resultHeader);
 
-        // int[] sizes = { 2, 4, 5, 10, 12 };
         int[] sizes = { 100, 500, 1000, 2500, 5000 };
 
+        // INTEGER START
         System.out.println("Integer Test");
         for (int size : sizes) {
             Integer[] testData = fillUniqueIntArray(size);
@@ -40,7 +40,28 @@ public class Driver {
         for (int x = 1; x <= sizes.length; x++) {
             testResults.remove(1);
         }
+        // INTEGER END
 
+        // FLOAT START
+        System.out.println("Float Test");
+        for (int size : sizes) {
+            Float[] testData = fillUniqueFloatArray(size);
+            performThreeTest(testData);
+        }
+
+        for (List<String> row : testResults) {
+            for (String item : row) {
+                System.out.print(item + "$");
+            }
+            System.out.println();
+        }
+        // remove last test results
+        for (int x = 1; x <= sizes.length; x++) {
+            testResults.remove(1);
+        }
+        // FLOAT END
+
+        // CHARACTER START
         System.out.println("Character Test");
         for (int size : sizes) {
             Character[] testData = fillCharArray(size);
@@ -53,8 +74,14 @@ public class Driver {
             }
             System.out.println();
         }
+        // remove last test results
+        for (int x = 1; x <= sizes.length; x++) {
+            testResults.remove(1);
+        }
+        // CHARACTER END
     }
 
+    // generate an array with n Integer values
     public static Integer[] fillUniqueIntArray(int n) {
         Integer[] arr = new Integer[n];
         Set<Integer> set = new HashSet<Integer>();
@@ -71,6 +98,26 @@ public class Driver {
         return arr;
     }
 
+    // generate an array with n float values
+    public static Float[] fillUniqueFloatArray(int n) {
+        Float[] arr = new Float[n];
+        Set<Float> set = new HashSet<Float>();
+        Random rand = new Random();
+        int i = 0;
+        int min = 1;
+        int max = n + n;
+        while (i < n) {
+            float num = rand.nextFloat() * (max - min) + min;
+            if (!set.contains(num)) {
+                set.add(num);
+                arr[i] = num;
+                i++;
+            }
+        }
+        return arr;
+    }
+
+    // generate a array with n characters values
     public static Character[] fillCharArray(int n) {
         Character[] arr = new Character[n];
         Random rand = new Random();
