@@ -1,5 +1,8 @@
+package asg3;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
@@ -25,11 +28,18 @@ public class Driver {
             System.out.println(Arrays.toString(testData));
             QuickSort qs = new QuickSort<Integer>();
             qs.arr = new ArrayList<Integer>();
+
+            ParallelQuickSortThreadPool<Integer> pqst = new ParallelQuickSortThreadPool<>();
+            // this will take care of thread sync issues
+            pqst.input = Collections.synchronizedList(new ArrayList<Integer>());
             for (int i : testData) {
                 qs.arr.add(i);
+                pqst.input.add(i);
             }
             qs.perform();
-            qs.arr.forEach(val -> System.out.print(val + ","));
+            pqst.perform();
+            // qs.arr.forEach((val) -> System.out.print(val + ","));
+            pqst.input.forEach(val -> System.out.print(val + ","));
             System.out.println();
             // performThreeTest(testData);
         }

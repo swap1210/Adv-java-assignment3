@@ -1,3 +1,4 @@
+package asg3;
 
 @FunctionalInterface
 public interface MyFunction {
