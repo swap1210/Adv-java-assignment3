@@ -1,12 +1,19 @@
 package asg3;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ParallelQuickSortThreadPool<T extends Comparable> {
+public class ParallelQuickSortThreadPool<T extends Comparable<T>> implements MySorters {
     public List<T> input;
+
+    public ParallelQuickSortThreadPool() {
+        // this will take care of thread sync issues
+        input = Collections.synchronizedList(new ArrayList<T>());
+    }
 
     // Get all possible thread count from the system
     private final int N_THREADS = Runtime.getRuntime().availableProcessors();
@@ -39,9 +46,9 @@ public class ParallelQuickSortThreadPool<T extends Comparable> {
     // merely generates new runnables and passes them to the ThreadPoolExecutor, so
     // it is not technically recursive.
 
-    private class QuicksortRunnable<T extends Comparable> implements Runnable {
+    private class QuicksortRunnable<Q extends Comparable<Q>> implements Runnable {
         // The array being sorted.
-        private final List<T> values;
+        private final List<Q> values;
         // The starting index of the block of the array to be sorted.
         private final int left;
         // The ending index of the block of the array to be sorted.
@@ -57,7 +64,7 @@ public class ParallelQuickSortThreadPool<T extends Comparable> {
          * @param right  The ending index of the block of the array to be sorted.
          * @param count  The number of currently executing threads.
          */
-        public QuicksortRunnable(List<T> values, int left, int right, AtomicInteger count) {
+        public QuicksortRunnable(List<Q> values, int left, int right, AtomicInteger count) {
             this.values = values;
             this.left = left;
             this.right = right;
@@ -93,8 +100,8 @@ public class ParallelQuickSortThreadPool<T extends Comparable> {
                     quicksort(storeIndex + 1, pRight);
                 } else {
                     count.getAndAdd(2);
-                    pool.execute(new QuicksortRunnable(values, pLeft, storeIndex - 1, count));
-                    pool.execute(new QuicksortRunnable(values, storeIndex + 1, pRight, count));
+                    pool.execute(new QuicksortRunnable<Q>(values, pLeft, storeIndex - 1, count));
+                    pool.execute(new QuicksortRunnable<Q>(values, storeIndex + 1, pRight, count));
                 }
             }
         }
@@ -107,7 +114,7 @@ public class ParallelQuickSortThreadPool<T extends Comparable> {
         // @return The final index of the pivot value.
 
         private int partition(int pLeft, int pRight) {
-            T pivotValue = values.get(pRight);
+            Q pivotValue = values.get(pRight);
             int storeIndex = pLeft;
             for (int i = pLeft; i < pRight; i++) {
                 if (values.get(i).compareTo(pivotValue) < 0) {
@@ -121,7 +128,7 @@ public class ParallelQuickSortThreadPool<T extends Comparable> {
 
         // Method to Swap integers
         private void swap(int left, int right) {
-            T temp = values.get(left);
+            Q temp = values.get(left);
             values.set(left, values.get(right));
             values.set(right, temp);
         }

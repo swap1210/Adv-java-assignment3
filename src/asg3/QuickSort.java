@@ -1,9 +1,14 @@
 package asg3;
 
+import java.util.ArrayList;
 import java.util.List;
 
-class QuickSort<T extends Comparable> {
+class QuickSort<T extends Comparable<T>> implements MySorters {
     public List<T> arr;
+
+    public QuickSort() {
+        arr = new ArrayList<T>();
+    }
 
     // a function that switches two elements
     void swap(int i, int j) {
@@ -25,10 +30,8 @@ class QuickSort<T extends Comparable> {
         int i = (low - 1);
 
         for (int j = low; j <= high - 1; j++) {
-
             // if pivot is smaller than current element
             if (arr.get(j).compareTo(pivot) < 0) {
-
                 // Increment index of
                 // smaller element
                 i++;
@@ -39,7 +42,7 @@ class QuickSort<T extends Comparable> {
         return (i + 1);
     }
 
-    void perform() {
+    public void perform() {
         perform(0, arr.size() - 1);
     }
 
