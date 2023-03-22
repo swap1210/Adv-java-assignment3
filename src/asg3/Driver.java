@@ -134,6 +134,7 @@ public class Driver {
             K[] testData) {
 
         QuickSort<K> qs = new QuickSort<K>();
+        // synchronizedList takes care of thread sync issue
         List<K> tempData = Collections.synchronizedList(new ArrayList<K>());
         ParallelQuickSortThreadPool<K> pqst = new ParallelQuickSortThreadPool<>();
         pqst.input = Collections.synchronizedList(new ArrayList<K>());
@@ -162,25 +163,4 @@ public class Driver {
         // pqs.arr.forEach(val -> System.out.print(val + ","));
         testResults.add(result);
     }
-
-    // static void performThreeTest(int[] testData) {
-    // result.add("" + testData.length);
-    // int[][] testDataQS = new int[3][testData.length];
-    // for (int i = 0; i < 3; i++) {
-    // testDataQS[i] = Arrays.copyOf(testData, testData.length);
-    // }
-
-    // MyFunction[] qs = new MyFunction[3];
-    // qs[0] = (int[] x) -> QuickSort.perform(x);
-    // qs[1] = (int[] x) -> ParallelQuickSort.perform(x);
-    // qs[2] = (int[] x) -> ParallelQuickSortThreadPool.perform(x);
-
-    // for (int i = 0; i < 3; i++) {
-    // long QSStartTime = System.nanoTime();
-    // qs[i].apply(testDataQS[i]);
-    // long QSEndTime = System.nanoTime();
-    // result.add("" + (QSEndTime - QSStartTime) * 1.0 / 1000000);
-    // }
-    // testResults.add(result);
-    // }
 }

@@ -6,6 +6,27 @@
 	"configurations": [
 		{
 			"type": "java",
+			"name": "Q2Driver",
+			"request": "launch",
+			"mainClass": "asg3.Q2Driver",
+			"projectName": "Adv-java-assignment3_f9fe59e2"
+		},
+		{
+			"type": "java",
+			"name": "Q3Driver",
+			"request": "launch",
+			"mainClass": "asg3.Q3Driver",
+			"projectName": "Adv-java-assignment3_f9fe59e2"
+		},
+		{
+			"type": "java",
+			"name": "Q1Driver",
+			"request": "launch",
+			"mainClass": "asg3.Q1Driver",
+			"projectName": "Adv-java-assignment3_f9fe59e2"
+		},
+		{
+			"type": "java",
 			"name": "Driver",
 			"request": "launch",
 			"mainClass": "asg3.Driver",
